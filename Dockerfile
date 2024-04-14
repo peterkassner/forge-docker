@@ -65,9 +65,9 @@ RUN mkdir -p /sd-models
 
 # Download the model file from the cloud storage service
 # Replace <cloud-storage-url> with the actual URL of the model file in the cloud storage service
-ADD https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors /sd-models/ || true
+ADD https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors /sd-models/ 
 
-COPY sd_xl_base_1.0.safetensors /sd-models/sd_xl_base_1.0.safetensors || true
+COPY sd_xl_base_1.0.safetensors /sd-models/sd_xl_base_1.0.safetensors
 
 # Create and use the Python venv
 RUN python3 -m venv /venv
