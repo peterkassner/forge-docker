@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 export PYTHONUNBUFFERED=1
 export APP="stable-diffusion-webui-forge"
@@ -34,9 +34,12 @@ fix_venvs() {
 }
 
 link_models() {
-   if [[ ! -L /workspace/stable-diffusion-webui-forge/models/Stable-diffusion/realisticVisionV51_v51VAE.safetensors ]]; then
-       ln -s /sd-models/realisticVisionV51_v51VAE.safetensors /workspace/stable-diffusion-webui-forge/models/Stable-diffusion/realisticVisionV51_v51VAE.safetensors
-   fi
+    if [[ ! -f /workspace/stable-diffusion-webui-forge/models/Stable-diffusion/sd_xl_base_1.0.safetensors ]]; then
+        echo "sd_xl_base_1.0.safetensors not found in /models/Stable-diffusion. Running model-import script..."
+        /model-import.sh
+    else
+        echo "sd_xl_base_1.0.safetensors already exists in /models/Stable-diffusion. Skipping model import."
+    fi
 }
 
 if [ "$(printf '%s\n' "$EXISTING_VERSION" "$TEMPLATE_VERSION" | sort -V | head -n 1)" = "$EXISTING_VERSION" ]; then
@@ -45,6 +48,7 @@ if [ "$(printf '%s\n' "$EXISTING_VERSION" "$TEMPLATE_VERSION" | sort -V | head -
         fix_venvs
         link_models
     else
+        link_models
         echo "Existing version is the same as the template version, no syncing required."
     fi
 else

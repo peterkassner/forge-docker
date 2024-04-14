@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 #animate-diff models
 cd /workspace/stable-diffusion-webui-forge/extensions/sd-webui-animatediff/model && \

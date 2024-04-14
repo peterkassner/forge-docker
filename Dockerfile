@@ -1,11 +1,12 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-SHELL ["/bin/zsh", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=on \
-    SHELL=/bin/zsh
+    SHELL=/bin/zsh \
+    RUNNING_IN_DOCKER=true
 
 # Install Ubuntu packages
 RUN apt update && \
@@ -65,7 +66,7 @@ RUN mkdir -p /sd-models
 # Add SDXL models and VAE
 # These need to already have been downloaded:
 #   wget https://huggingface.co/lllyasviel/fav_models/resolve/main/fav/realisticVisionV51_v51VAE.safetensors
-COPY realisticVisionV51_v51VAE.safetensors /sd-models/realisticVisionV51_v51VAE.safetensors
+COPY sd_xl_base_1.0.safetensors /sd-models/sd_xl_base_1.0.safetensors
 
 # Create and use the Python venv
 RUN python3 -m venv /venv
@@ -96,9 +97,9 @@ RUN source /venv/bin/activate && \
 
 # Cache the Stable Diffusion Models
 # SDXL models result in OOM kills with 8GB system memory, need 30GB+ to cache these
-    #RUN source /venv/bin/activate && \
-    #    python3 cache-sd-model.py --no-half-vae --no-half --xformers --use-cpu=all --ckpt /sd-models/realisticVisionV51_v51VAE.safetensors && \
-    #    deactivate
+    RUN source /venv/bin/activate && \
+        python3 cache-sd-model.py --no-half-vae --no-half --xformers --use-cpu=all --ckpt /sd-models/sd_xl_base_1.0.safetensors && \
+    deactivate
 
 # Copy Stable Diffusion WebUI Forge config files
 COPY forge/relauncher.py forge/webui-user.sh forge/config.json forge/ui_config_pkjApril2024-FINAL.json forge/ui-config.json /stable-diffusion-webui-forge/
@@ -163,5 +164,6 @@ WORKDIR /
 COPY --chmod=755 scripts/* ./
 
 # Start the container
-SHELL ["/bin/zsh", "--login", "-c"]
-CMD [ "/start.sh" ]
+SHELL ["/bin/bash", "--login", "-c"]
+CMD [ "/bin/bash", "--login", "-c", "/start.sh 2>&1 | tee /workspace/logs/startup.log" ]
+

@@ -1,0 +1,5 @@
+{
+    "genieai.openai.generateCode-enabled": false,
+    "genieai.response.autoScroll": false,
+    "genieai.openai.model": "gpt-3.5-turbo-1106"
+}

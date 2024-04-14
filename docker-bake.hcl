@@ -1,5 +1,5 @@
 variable "USERNAME" {
-    default = "ashleykza"
+    default = "peterkassner"
 }
 
 variable "APP" {
@@ -7,7 +7,7 @@ variable "APP" {
 }
 
 variable "RELEASE" {
-    default = "2.0.2"
+    default = "1.0"
 }
 
 variable "CU_VERSION" {

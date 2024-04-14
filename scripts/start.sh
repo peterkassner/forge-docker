@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/bash
 # ---------------------------------------------------------------------------- #
 #                          Function Definitions                                #
 # ---------------------------------------------------------------------------- #
@@ -13,7 +13,7 @@ execute_script() {
     local script_msg=$2
     if [[ -f ${script_path} ]]; then
         echo "${script_msg}"
-        zsh ${script_path}
+        bash ${script_path}
     fi
 }
 
@@ -47,6 +47,9 @@ setup_ssh() {
 
     chmod 700 -R ~/.ssh
 
+    # Set Zsh as the default shell for new users
+    sed -i '/^# End of file/a chsh -s /bin/zsh $USER' /etc/skel/.profile
+
     # Generate SSH host keys if they don't exist
     generate_ssh_host_keys
 
@@ -56,10 +59,11 @@ setup_ssh() {
     cat /etc/ssh/*.pub
 }
 
+
 export_env_vars() {
     echo "Exporting environment variables..."
     printenv | grep -E '^RUNPOD_|^PATH=|^_=' | awk -F = '{ print "export " $1 "=\"" $2 "\"" }' >> /etc/rp_environment
-    echo 'source /etc/rp_environment' >> ~/.zshrc
+    echo 'source /etc/rp_environment' >> ~/.bashrc
 }
 
 #start_jupyter() {
@@ -80,7 +84,7 @@ export_env_vars() {
 #      --ip=* \
 #      --FileContentsManager.delete_to_trash=False \
 #      --ContentsManager.allow_hidden=True \
-#      --ServerApp.terminado_settings='{"shell_command":["/bin/zsh"]}' \
+#      --ServerApp.terminado_settings='{"shell_command":["/bin/bash"]}' \
 #      --ServerApp.token=${JUPYTER_PASSWORD} \
 #      --ServerApp.allow_origin=* \
 #      --ServerApp.preferred_dir=/workspace &> /workspace/logs/jupyter.log &
@@ -92,6 +96,28 @@ start_runpod_uploader() {
     nohup /usr/local/bin/runpod-uploader &> /workspace/logs/runpod-uploader.log &
     echo "RunPod Uploader started"
 }
+
+setup_zsh() {
+    echo "Setting up Zsh for user 'main'..."
+    
+    # Add a new group and user 'main' with Zsh as the default shell
+    addgroup main && \
+    adduser --system --ingroup main --shell /bin/zsh main
+
+    # Create necessary directories and set ownership
+    mkdir -p /app && chown -R main:main /app
+    mkdir -p /home/main/.antigen
+    curl -L git.io/antigen > /home/main/.antigen/antigen.zsh
+    
+    # Copy Zsh configuration file
+    # Use your own Zsh configuration or the provided .dockershell.sh
+    cp dockershell.sh /home/main/.zshrc  # Changed COPY to cp
+    chown -R main:main /home/main/.antigen /home/main/.zshrc
+    
+    # Start Zsh and initialize the setup for the user 'main'
+    sudo -u main /bin/zsh /home/main/.zshrc  # Changed su - main -c to sudo -u main
+}
+
 
 configure_filezilla() {
     # Only proceed if there is a public IP
@@ -159,12 +185,14 @@ EOF
 
 echo "Container Started, configuration in progress..."
 start_nginx
+setup_zsh
 setup_ssh
-start_jupyter
+#start_jupyter
 start_runpod_uploader
 execute_script "/pre_start.sh" "Running pre-start script..."
 configure_filezilla
 export_env_vars
+
 execute_script "/post_start.sh" "Running post-start script..."
 echo "Container is READY!"
 sleep infinity
