@@ -19,7 +19,7 @@ variable "CUDA_VERSION" {
 }
 
 variable "TORCH_VERSION" {
-    default = "2.1.1"
+    default = "2.1.0"
 }
 
 target "default" {
@@ -27,7 +27,7 @@ target "default" {
     tags = ["${USERNAME}/${APP}:${RELEASE}"]
     args = {
         RELEASE = "${RELEASE}"
-        BASE_IMAGE = "runpod/pytorch:2.1.1-py3.10-cuda12.1.1-devel-ubuntu22.04"
+        BASE_IMAGE = "runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04"
         INDEX_URL = "https://download.pytorch.org/whl/cu${CU_VERSION}"
         TORCH_VERSION = "${TORCH_VERSION}+cu${CU_VERSION}"
         XFORMERS_VERSION = "0.0.23.post1+cu${CU_VERSION}"
