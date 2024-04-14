@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 # ---------------------------------------------------------------------------- #
 #                          Function Definitions                                #
 # ---------------------------------------------------------------------------- #
@@ -13,7 +13,7 @@ execute_script() {
     local script_msg=$2
     if [[ -f ${script_path} ]]; then
         echo "${script_msg}"
-        bash ${script_path}
+        zsh ${script_path}
     fi
 }
 
@@ -59,33 +59,33 @@ setup_ssh() {
 export_env_vars() {
     echo "Exporting environment variables..."
     printenv | grep -E '^RUNPOD_|^PATH=|^_=' | awk -F = '{ print "export " $1 "=\"" $2 "\"" }' >> /etc/rp_environment
-    echo 'source /etc/rp_environment' >> ~/.bashrc
+    echo 'source /etc/rp_environment' >> ~/.zshrc
 }
 
-start_jupyter() {
-    # Default to not using a password
-    JUPYTER_PASSWORD=""
+#start_jupyter() {
+#    # Default to not using a password
+#    JUPYTER_PASSWORD=""
 
     # Allow a password to be set by providing the JUPYTER_PASSWORD environment variable
-    if [[ ${JUPYTER_LAB_PASSWORD} ]]; then
-        JUPYTER_PASSWORD=${JUPYTER_LAB_PASSWORD}
-    fi
-
-    echo "Starting Jupyter Lab..."
-    mkdir -p /workspace/logs
-    cd / && \
-    nohup jupyter lab --allow-root \
-      --no-browser \
-      --port=8888 \
-      --ip=* \
-      --FileContentsManager.delete_to_trash=False \
-      --ContentsManager.allow_hidden=True \
-      --ServerApp.terminado_settings='{"shell_command":["/bin/bash"]}' \
-      --ServerApp.token=${JUPYTER_PASSWORD} \
-      --ServerApp.allow_origin=* \
-      --ServerApp.preferred_dir=/workspace &> /workspace/logs/jupyter.log &
-    echo "Jupyter Lab started"
-}
+#    if [[ ${JUPYTER_LAB_PASSWORD} ]]; then
+#        JUPYTER_PASSWORD=${JUPYTER_LAB_PASSWORD}
+#    fi
+#
+#    echo "Starting Jupyter Lab..."
+#    mkdir -p /workspace/logs
+#    cd / && \
+#    nohup jupyter lab --allow-root \
+#      --no-browser \
+#      --port=8888 \
+#      --ip=* \
+#      --FileContentsManager.delete_to_trash=False \
+#      --ContentsManager.allow_hidden=True \
+#      --ServerApp.terminado_settings='{"shell_command":["/bin/zsh"]}' \
+#      --ServerApp.token=${JUPYTER_PASSWORD} \
+#      --ServerApp.allow_origin=* \
+#      --ServerApp.preferred_dir=/workspace &> /workspace/logs/jupyter.log &
+#    echo "Jupyter Lab started"
+#}
 
 start_runpod_uploader() {
     echo "Starting RunPod Uploader..."

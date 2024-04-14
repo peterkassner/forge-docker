@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 if [ "$#" -ne 2 ]; then
   echo "Usage: $0 <OLD_VENV> <NEW_VENV>"

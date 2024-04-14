@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 #animate-diff models
 cd /workspace/stable-diffusion-webui-forge/extensions/sd-webui-animatediff/model && \
 wget https://huggingface.co/conrevo/AnimateDiff-A1111/resolve/main/motion_module/mm_sdxl_v10_beta.safetensors && \
@@ -15,5 +17,5 @@ cd /workspace/stable-diffusion-webui-forge/models/Stable-diffusion && \
 wget https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors && \
 wget https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors && \ 
 
-cd /workspace/stable-diffusion-webui-forge/models/VAE
+cd /workspace/stable-diffusion-webui-forge/models/VAE && \
 wget https://huggingface.co/stabilityai/sdxl-vae/resolve/main/sdxl_vae.safetensors

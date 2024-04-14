@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 #########################################################
 # Uncomment and change the variables below to your need:#
 #########################################################
@@ -10,7 +10,7 @@ install_dir="/workspace"
 #clone_dir="stable-diffusion-webui"
 
 # Commandline arguments for webui.py, for example: export COMMANDLINE_ARGS="--medvram --opt-split-attention"
-export COMMANDLINE_ARGS="--port 3001 --listen --api --xformers --enable-insecure-extension-access --no-half-vae"
+export COMMANDLINE_ARGS="--port 3001 --listen --api --xformers --ui-config-file /workspace/stable-diffusion-webui-forge/ui_config_pkjApril2024-FINAL.json --update-all-extensions --enable-insecure-extension-access --disable-model-loading-ram-optimization --no-half-vae"
 
 # python3 executable
 #python_cmd="python3"

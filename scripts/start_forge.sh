@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 echo "Starting Stable Diffusion WebUI Forge"
 export HF_HOME="/workspace"

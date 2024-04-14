@@ -1,11 +1,11 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["/bin/zsh", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=on \
-    SHELL=/bin/bash
+    SHELL=/bin/zsh
 
 # Install Ubuntu packages
 RUN apt update && \
@@ -19,6 +19,7 @@ RUN apt update && \
         python3-dev \
         nginx \
         bash \
+        zsh \
         dos2unix \
         git \
         ncdu \
@@ -100,15 +101,13 @@ RUN source /venv/bin/activate && \
     #    deactivate
 
 # Copy Stable Diffusion WebUI Forge config files
-COPY forge/relauncher.py forge/webui-user.sh forge/config.json forge/ui-config.json /stable-diffusion-webui-forge/
+COPY forge/relauncher.py forge/webui-user.sh forge/config.json forge/ui_config_pkjApril2024-FINAL.json forge/ui-config.json /stable-diffusion-webui-forge/
 
 # ADD SDXL styles.csv
 ADD https://raw.githubusercontent.com/Douleb/SDXL-750-Styles-GPT4-/main/styles.csv /stable-diffusion-webui/styles.csv
 
 # Install Jupyter, gdown and OhMyRunPod
-RUN pip3 install -U --no-cache-dir jupyterlab \
-        jupyterlab_widgets \
-        ipykernel \
+RUN pip3 install -U --no-cache-dir ipykernel \
         ipywidgets \
         gdown \
         OhMyRunPod
@@ -164,5 +163,5 @@ WORKDIR /
 COPY --chmod=755 scripts/* ./
 
 # Start the container
-SHELL ["/bin/bash", "--login", "-c"]
+SHELL ["/bin/zsh", "--login", "-c"]
 CMD [ "/start.sh" ]

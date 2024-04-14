@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 export PYTHONUNBUFFERED=1
 export APP="stable-diffusion-webui-forge"
