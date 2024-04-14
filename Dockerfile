@@ -1,5 +1,6 @@
 # Stage 1: Base
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -60,8 +61,8 @@ RUN ln -s /usr/bin/python3.10 /usr/bin/python
 # Stage 2: Install Stable Diffusion WebUI Forge and python modules
 FROM base as setup
 
-WORKDIR /
-RUN mkdir -p /sd-models
+#WORKDIR /
+#RUN mkdir -p /sd-models
 
 # Download the model file from the cloud storage service
 # Replace <cloud-storage-url> with the actual URL of the model file in the cloud storage service
@@ -82,7 +83,7 @@ ARG INDEX_URL
 ARG TORCH_VERSION
 ARG XFORMERS_VERSION
 WORKDIR /stable-diffusion-webui-forge
-ENV TORCH_INDEX_URL=${INDEX_URL}
+ENV TORCH_INDEX_URL=${INDEX_URL}/torch
 ENV TORCH_COMMAND="pip install torch==${TORCH_VERSION} torchvision --index-url ${TORCH_INDEX_URL}"
 ENV XFORMERS_PACKAGE="xformers==${XFORMERS_VERSION} --index-url ${TORCH_INDEX_URL}"
 RUN source /venv/bin/activate && \
