@@ -65,9 +65,9 @@ RUN mkdir -p /sd-models
 
 # Download the model file from the cloud storage service
 # Replace <cloud-storage-url> with the actual URL of the model file in the cloud storage service
-ADD https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors /sd-models/ 
+#ADD https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors /sd-models/ 
 
-COPY sd_xl_base_1.0.safetensors /sd-models/sd_xl_base_1.0.safetensors
+#COPY sd_xl_base_1.0.safetensors /sd-models/sd_xl_base_1.0.safetensors
 
 # Create and use the Python venv
 RUN python3 -m venv /venv
@@ -98,9 +98,9 @@ RUN source /venv/bin/activate && \
 
 # Cache the Stable Diffusion Models
 # SDXL models result in OOM kills with 8GB system memory, need 30GB+ to cache these
-    RUN source /venv/bin/activate && \
-        python3 cache-sd-model.py --no-half-vae --no-half --xformers --use-cpu=all --ckpt /sd-models/sd_xl_base_1.0.safetensors && \
-    deactivate
+#    RUN source /venv/bin/activate && \
+#        python3 cache-sd-model.py --no-half-vae --no-half --xformers --use-cpu=all --ckpt /sd-models/sd_xl_base_1.0.safetensors && \
+#    deactivate
 
 # Copy Stable Diffusion WebUI Forge config files
 COPY forge/relauncher.py forge/webui-user.sh forge/config.json forge/ui_config_pkjApril2024-FINAL.json forge/ui-config.json /stable-diffusion-webui-forge/
