@@ -63,9 +63,10 @@ FROM base as setup
 WORKDIR /
 RUN mkdir -p /sd-models
 
-# Add SDXL models and VAE
-# These need to already have been downloaded:
-#   wget https://huggingface.co/lllyasviel/fav_models/resolve/main/fav/realisticVisionV51_v51VAE.safetensors
+# Download the model file from the cloud storage service
+# Replace <cloud-storage-url> with the actual URL of the model file in the cloud storage service
+RUN wget -O /sd-models/sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
+
 COPY sd_xl_base_1.0.safetensors /sd-models/sd_xl_base_1.0.safetensors
 
 # Create and use the Python venv
