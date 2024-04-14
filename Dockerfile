@@ -83,8 +83,8 @@ ARG INDEX_URL
 ARG TORCH_VERSION
 ARG XFORMERS_VERSION
 WORKDIR /stable-diffusion-webui-forge
-ENV TORCH_INDEX_URL=${INDEX_URL}/torch
-ENV TORCH_COMMAND="pip install torch==${TORCH_VERSION} torchvision --index-url ${TORCH_INDEX_URL}"
+ENV TORCH_INDEX_URL=${INDEX_URL}
+ENV TORCH_COMMAND="pip install torch==${TORCH_VERSION} torchvision==0.16.0 --index-url ${TORCH_INDEX_URL}"
 ENV XFORMERS_PACKAGE="xformers==${XFORMERS_VERSION} --index-url ${TORCH_INDEX_URL}"
 RUN source /venv/bin/activate && \
     ${TORCH_COMMAND} && \
