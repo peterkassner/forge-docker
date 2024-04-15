@@ -163,7 +163,7 @@ ENV VENV_PATH=${VENV_PATH}
 
 # Copy the scripts
 WORKDIR /
-COPY --chmod=755 scripts/docker.shell scripts/fix_venv.sh scripts/model-import.sh /scripts/pre_start.sh /scripts/start_forge.sh scripts/start.sh /scripts
+COPY --chmod=755 scripts/dockershell.sh scripts/fix_venv.sh scripts/model-import.sh /scripts/pre_start.sh /scripts/start_forge.sh scripts/start.sh /scripts
 RUN mkdir -p /logs
 
 # Start the container
