@@ -66,7 +66,7 @@ RUN ln -s /usr/bin/python3.10 /usr/bin/python
 
 # Download the model file from the cloud storage service
 # Replace <cloud-storage-url> with the actual URL of the model file in the cloud storage service
-#ADD https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors /sd-models/ 
+#ADD https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors /sd-models/
 
 #COPY sd_xl_base_1.0.safetensors /sd-models/sd_xl_base_1.0.safetensors
 
@@ -164,6 +164,7 @@ ENV VENV_PATH=${VENV_PATH}
 # Copy the scripts
 WORKDIR /
 COPY --chmod=755 scripts/* ./
+RUN mkdir -p /logs
 
 # Start the container
 SHELL ["/bin/bash", "--login", "-c"]

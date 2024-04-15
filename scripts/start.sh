@@ -99,23 +99,23 @@ start_runpod_uploader() {
 
 setup_zsh() {
     echo "Setting up Zsh for user 'main'..."
-    
+
     # Add a new group and user 'main' with Zsh as the default shell
     addgroup main && \
     adduser --system --ingroup main --shell /bin/zsh main
 
     # Create necessary directories and set ownership
     mkdir -p /app && chown -R main:main /app
-    mkdir -p /home/main/.antigen
-    curl -L git.io/antigen > /home/main/.antigen/antigen.zsh
-    
+    mkdir -p /root/.antigen
+    curl -L git.io/antigen > /root/.antigen/antigen.zsh
+
     # Copy Zsh configuration file
     # Use your own Zsh configuration or the provided .dockershell.sh
-    cp dockershell.sh /home/main/.zshrc  # Changed COPY to cp
-    chown -R main:main /home/main/.antigen /home/main/.zshrc
-    
+    cp dockershell.sh /root/.zshrc  # Changed COPY to cp
+    chown -R main:main /root/.antigen /root/.zshrc
+
     # Start Zsh and initialize the setup for the user 'main'
-    sudo -u main /bin/zsh /home/main/.zshrc  # Changed su - main -c to sudo -u main
+    sudo -u main /bin/zsh /root/.zshrc  # Changed su - main -c to sudo -u main
 }
 
 
@@ -193,6 +193,6 @@ execute_script "/pre_start.sh" "Running pre-start script..."
 configure_filezilla
 export_env_vars
 
-execute_script "/post_start.sh" "Running post-start script..."
+execute_script "/start_forge.sh" "Running post-start script..."
 echo "Container is READY!"
 sleep infinity
