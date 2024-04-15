@@ -1,4 +1,4 @@
-name: pkj-forge
+name: pkj-forge2
 
 on:
   workflow_dispatch:
