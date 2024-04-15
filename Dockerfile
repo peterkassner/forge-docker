@@ -164,7 +164,7 @@ ENV VENV_PATH=${VENV_PATH}
 # Copy the scripts
 WORKDIR /
 COPY --chmod=755 scripts/* ./
-RUN mkdir -p /logs
+RUN mkdir -p ./logs
 
 # Start the container
 SHELL ["/bin/bash", "--login", "-c"]

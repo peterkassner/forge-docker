@@ -48,7 +48,7 @@ setup_ssh() {
     chmod 700 -R ~/.ssh
 
     # Set Zsh as the default shell for new users
-    sed -i '/^# End of file/a chsh -s /bin/zsh $USER' /etc/skel/.profile
+    sed -i "/^# End of file/a chsh -s /bin/zsh $USER" /etc/skel/.profile
 
     # Generate SSH host keys if they don't exist
     generate_ssh_host_keys
@@ -115,7 +115,7 @@ setup_zsh() {
     chown -R main:main /root/.antigen /root/.zshrc
 
     # Start Zsh and initialize the setup for the user 'main'
-    sudo -u main /bin/zsh /root/.zshrc  # Changed su - main -c to sudo -u main
+    -u main /bin/zsh /root/.zshrc  # removed sudo before -u (pkj)
 }
 
 
