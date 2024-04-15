@@ -189,10 +189,33 @@ setup_zsh
 setup_ssh
 #start_jupyter
 start_runpod_uploader
-execute_script "/pre_start.sh" "Running pre-start script..."
+
+if [ -x "./pre_start.sh" ]; then
+  chmod +x ./pre_start.sh
+  ./pre_start.sh
+else
+  if [ -x "/scripts/pre_start.sh" ]; then
+    chmod +x /scripts/pre_start.sh
+    /scripts/pre_start.sh
+  else
+    echo "Error: pre_start.sh not found in current directory or /scripts directory."
+  fi
+fi
+
 configure_filezilla
 export_env_vars
 
-execute_script "/start_forge.sh" "Running post-start script..."
+if [ -x "./start-forge.sh" ]; then
+  chmod +x ./start-forge.sh
+  ./start-forge.sh
+else
+  if [ -x "/scripts/start-forge.sh" ]; then
+    chmod +x /scripts/start-forge.sh
+    /scripts/start-forge.sh
+  else
+    echo "Error: start-forge.sh not found in current directory or /scripts directory."
+  fi
+fi
+
 echo "Container is READY!"
 sleep infinity

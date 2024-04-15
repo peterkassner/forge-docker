@@ -61,8 +61,8 @@ RUN ln -s /usr/bin/python3.10 /usr/bin/python
 # Stage 2: Install Stable Diffusion WebUI Forge and python modules
 #FROM base as setup
 
-#WORKDIR /
-#RUN mkdir -p /sd-models
+WORKDIR /
+RUN mkdir -p /sd-models
 
 # Download the model file from the cloud storage service
 # Replace <cloud-storage-url> with the actual URL of the model file in the cloud storage service
@@ -163,10 +163,10 @@ ENV VENV_PATH=${VENV_PATH}
 
 # Copy the scripts
 WORKDIR /
-COPY --chmod=755 scripts/* ./
-RUN mkdir -p ./logs
+COPY --chmod=755 scripts/docker.shell scripts/fix_venv.sh scripts/model-import.sh /scripts/pre_start.sh /scripts/start_forge.sh scripts/start.sh /scripts
+RUN mkdir -p /logs
 
 # Start the container
 SHELL ["/bin/bash", "--login", "-c"]
-CMD [ "/bin/bash", "--login", "-c", "/start.sh 2>&1 | tee /workspace/logs/startup.log" ]
+CMD [ "/bin/bash", "--login", "-c", "/start.sh 2>&1 | tee /logs/startup.log" ]
 
