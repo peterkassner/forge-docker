@@ -1,6 +1,6 @@
 # Stage 1: Base
-ARG BASE_IMAGE
-FROM ${BASE_IMAGE}
+#ARG BASE_IMAGE
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -59,7 +59,7 @@ RUN apt update && \
 RUN ln -s /usr/bin/python3.10 /usr/bin/python
 
 # Stage 2: Install Stable Diffusion WebUI Forge and python modules
-FROM base as setup
+#FROM base as setup
 
 #WORKDIR /
 #RUN mkdir -p /sd-models
@@ -85,11 +85,11 @@ ARG XFORMERS_VERSION
 WORKDIR /stable-diffusion-webui-forge
 ENV TORCH_INDEX_URL=${INDEX_URL}
 ENV TORCH_COMMAND="pip install torch==${TORCH_VERSION} torchvision==0.16.0 --index-url ${TORCH_INDEX_URL}"
-ENV XFORMERS_PACKAGE="xformers==${XFORMERS_VERSION} --index-url ${TORCH_INDEX_URL}"
+#ENV XFORMERS_PACKAGE="xformers==${XFORMERS_VERSION} --index-url ${TORCH_INDEX_URL}"
 RUN source /venv/bin/activate && \
     ${TORCH_COMMAND} && \
     pip3 install -r requirements_versions.txt --extra-index-url ${TORCH_INDEX_URL} && \
-    pip3 install ${XFORMERS_PACKAGE} &&  \
+    #pip3 install ${XFORMERS_PACKAGE} &&  \
     deactivate
 
 COPY forge/cache-sd-model.py forge/install-forge.py ./
